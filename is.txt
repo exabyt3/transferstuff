@@ -1,0 +1,3 @@
+$searcher=[adsisearcher]"(&(objectCategory=computer)(lastlogon>=$((Get-Date).AddDays(-31).ToUniversalTime().ToFileTime())))"
+$computer_list = $searcher.FindAll() | ForEach-Object{$_.Properties.name}
+foreach ($computer in $computer_list) { try { $path = "\\" + $computer + "\C$\"; if(dir $path -ErrorAction SilentlyContinue) { $string = "[*] Admin to: " + $computer; Write-Host $string }} catch { } }
