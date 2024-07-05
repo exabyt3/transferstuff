@@ -1,0 +1,49 @@
+#!/usr/bin/python3
+
+import base64
+from Crypto.Cipher import AES, ARC4
+import binascii
+import sys
+
+BS = 16
+unpad = lambda s: s[:-s[-1]]
+
+# Thanks to https://stackoverflow.com/a/12525165 for crypto snippet
+class AESCipher:
+    def __init__(self, key):
+        self.key = key
+
+    def decrypt(self, enc, mode):
+        if mode == "ENCMTHD_2":
+            cipher = AES.new(self.key, AES.MODE_ECB)
+        elif mode == "ENCMTHD_3":
+            iv = b"\x00" * 16
+            cipher = AES.new(self.key, AES.MODE_CBC, iv)
+        else:
+            print("Invalid mode")
+            return False
+
+        return unpad(cipher.decrypt(enc))
+
+def main():
+    # Keys hardcoded into netscaler libnscli90.so
+    aeskey = binascii.unhexlify("351CBE38F041320F22D990AD8365889C7DE2FCCCAE5A1A8707E21E4ADCCD4AD9")
+    rc4key = binascii.unhexlify("2286da6ca015bcd9b7259753c2a5fbc2")
+
+    ciphertext = "b65f2142d01fe706083173b064c04cfc6b81ab2417d39d63d2b3216176d0e638b89cbca0f1c4294db56b66668f94ff0f"
+    mode = "ENCMTHD_3"
+
+    if mode == "ENCMTHD_3" or mode == "ENCMTHD_2":
+        c = AESCipher(aeskey)
+        decoded = c.decrypt(binascii.unhexlify(ciphertext), mode)
+        if mode == "ENCMTHD_3":
+            print(decoded[16:])
+        else:
+            print(decoded)
+    elif mode == "ENCMTHD_1":  # old rc4 mode
+        out_cipher = ARC4.new(rc4key)
+        decoded = out_cipher.decrypt(binascii.unhexlify(ciphertext))
+        print(decoded)
+
+if __name__ == "__main__":
+    main()
